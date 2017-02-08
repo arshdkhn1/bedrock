@@ -2,6 +2,12 @@
  * Define utility functions.
  */
 
+def loadConfigEnv(config) {
+    for (var in config.environment) {
+        env[var.key] = var.value
+    }
+}
+
 def demoAppName(branchname) {
     def appname = branchname[6..-1].replaceAll('_', '-')
     return "bedrock-demo-${appname}".toString()
@@ -81,8 +87,7 @@ def integrationTestJob(propFileName, appURL) {
                               credentialsId: 'SAUCELABS_CREDENTIALS',
                               usernameVariable: 'SAUCELABS_USERNAME',
                               passwordVariable: 'SAUCELABS_API_KEY']]) {
-                withEnv(["BASE_URL=${appURL}",
-                         "SELENIUM_VERSION=2.52.0"]) {
+                withEnv(["BASE_URL=${appURL}"]) {
                     try {
                         sh testScript
                     }
